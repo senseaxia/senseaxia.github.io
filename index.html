@@ -1,7 +1,828 @@
 <!DOCTYPE html>
-<html>
-<head><title>Senseaxia</title></head>
-<body> 
-<h1>We will be live soon! Thank you for your time.</h1>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Senseaxia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+:root {
+  --black: #0a0a0a;
+  --white: #f5f4f0;
+  --mid: #1a1a1a;
+  --accent: #f5f4f0;
+  --border: rgba(245,244,240,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--white);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(245,244,240,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+  mix-blend-mode: difference;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 48px;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  background: rgba(10,10,10,0.7);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.12em;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.5);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--white); }
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  padding: 0 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 60% at 70% 50%, rgba(255,255,255,0.04) 0%, transparent 70%),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(245,244,240,0.025) 80px,
+      rgba(245,244,240,0.025) 81px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(245,244,240,0.025) 80px,
+      rgba(245,244,240,0.025) 81px
+    );
+}
+
+.hero-left {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.4);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1s 0.2s forwards;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 10vw, 11rem);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 1s 0.4s forwards;
+}
+
+.hero-title span {
+  display: block;
+  -webkit-text-stroke: 1px rgba(245,244,240,0.3);
+  color: transparent;
+}
+
+.hero-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 48px;
+  padding-bottom: 8px;
+}
+
+.hero-desc {
+  max-width: 360px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(245,244,240,0.6);
+  text-align: right;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s forwards;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  padding: 18px 36px;
+  text-decoration: none;
+  transition: all 0.3s;
+  opacity: 0;
+  animation: fadeUp 1s 0.8s forwards;
+}
+.hero-cta:hover {
+  background: transparent;
+  color: var(--white);
+  outline: 1px solid var(--white);
+}
+.hero-cta svg { transition: transform 0.3s; }
+.hero-cta:hover svg { transform: translateX(6px); }
+
+.hero-line {
+  position: absolute;
+  bottom: 0; left: 48px;
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(245,244,240,0.4));
+  animation: fadeIn 1.5s 1.2s forwards;
+  opacity: 0;
+}
+
+.hero-counter {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,244,240,0.2);
+  writing-mode: vertical-rl;
+  opacity: 0;
+  animation: fadeIn 1.5s 1s forwards;
+}
+
+/* MARQUEE */
+.marquee-wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  padding: 18px 0;
+  background: var(--mid);
+}
+.marquee-track {
+  display: flex;
+  gap: 64px;
+  animation: marquee 18s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  color: rgba(245,244,240,0.25);
+  flex-shrink: 0;
+}
+.marquee-dot {
+  color: rgba(245,244,240,0.15);
+}
+
+/* ABOUT */
+#about {
+  padding: 140px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.35);
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-label::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: rgba(245,244,240,0.35);
+  display: block;
+}
+
+.about-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(245,244,240,0.6);
+  margin-bottom: 40px;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.35);
+}
+
+.about-visual {
+  position: relative;
+  height: 480px;
+}
+
+.about-card {
+  position: absolute;
+  background: var(--mid);
+  border: 1px solid var(--border);
+  padding: 32px;
+}
+.about-card:nth-child(1) {
+  top: 0; left: 0;
+  width: 75%; height: 65%;
+}
+.about-card:nth-child(2) {
+  bottom: 0; right: 0;
+  width: 55%; height: 48%;
+  background: var(--white);
+  color: var(--black);
+}
+
+.circuit-svg {
+  width: 100%; height: 100%;
+  opacity: 0.15;
+}
+
+.card2-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  line-height: 1.1;
+  color: var(--black);
+}
+.card2-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(10,10,10,0.4);
+  margin-top: 8px;
+}
+
+/* SERVICES */
+#services {
+  padding: 140px 48px;
+}
+
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 80px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 40px;
+}
+
+.services-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.services-desc {
+  max-width: 320px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: rgba(245,244,240,0.5);
+  text-align: right;
+}
+
+.service-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 48px;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: none;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--mid);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  z-index: 0;
+}
+
+.service-item:hover::before { transform: scaleX(1); }
+
+.service-item > * { position: relative; z-index: 1; }
+
+.service-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,244,240,0.25);
+}
+
+.service-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: 0.04em;
+  transition: letter-spacing 0.4s;
+}
+
+.service-item:hover .service-name { letter-spacing: 0.08em; }
+
+.service-arrow {
+  width: 48px; height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.service-item:hover .service-arrow {
+  background: var(--white);
+  color: var(--black);
+  transform: rotate(45deg);
+}
+
+/* CONTACT SECTION */
+#contact {
+  padding: 140px 48px;
+  background: var(--mid);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.contact-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 6vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+}
+
+.contact-heading span {
+  -webkit-text-stroke: 1px rgba(245,244,240,0.3);
+  color: transparent;
+  display: block;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,244,240,0.35);
+}
+
+.form-input, .form-textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: rgba(245,244,240,0.6);
+}
+
+.form-textarea {
+  resize: none;
+  height: 100px;
+}
+
+.form-input::placeholder, .form-textarea::placeholder {
+  color: rgba(245,244,240,0.2);
+}
+
+.submit-btn {
+  margin-top: 16px;
+  align-self: flex-start;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  border: none;
+  padding: 18px 48px;
+  cursor: none;
+  transition: all 0.3s;
+}
+
+.submit-btn:hover {
+  background: transparent;
+  color: var(--white);
+  outline: 1px solid var(--white);
+}
+
+/* FOOTER */
+footer {
+  padding: 32px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,244,240,0.3);
+}
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,244,240,0.2);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 20px 24px; }
+  .nav-links { gap: 24px; }
+  #hero { grid-template-columns: 1fr; padding: 120px 24px 60px; align-items: start; gap: 40px; }
+  .hero-right { align-items: flex-start; }
+  .hero-desc { text-align: left; }
+  .hero-counter { display: none; }
+  #about { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+  .about-visual { height: 280px; }
+  #services { padding: 80px 24px; }
+  .services-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .services-desc { text-align: left; }
+  .service-item { grid-template-columns: 48px 1fr auto; gap: 24px; }
+  #contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+  footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+}
+```
+
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+
+  <nav>
+    <a href="#hero" class="nav-logo">Senseaxia</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-left">
+      <p class="hero-eyebrow">Industrial Electronics Solutions</p>
+      <h1 class="hero-title">
+        Sense<span>axia</span>
+      </h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-desc">
+        We engineer embedded electronics solutions that power the next generation of industrial systems — precise, reliable, and built to last.
+      </p>
+      <a href="#contact" class="hero-cta">
+        Get in Touch
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="hero-line"></div>
+    <div class="hero-counter">EST. 2024 — INDUSTRIAL TECH</div>
+  </section>
+
+  <!-- MARQUEE -->
+
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Embedded Electronics</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Industrial Solutions</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Precision Engineering</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Systems Integration</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Hardware Design</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Firmware Development</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Embedded Electronics</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Industrial Solutions</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Precision Engineering</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Systems Integration</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Hardware Design</span>
+      <span class="marquee-dot">✦</span>
+      <span class="marquee-item">Firmware Development</span>
+      <span class="marquee-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+
+  <section id="about">
+    <div class="reveal">
+      <div class="section-label">Who We Are</div>
+      <h2 class="about-heading">Built for the<br/>Industrial Edge</h2>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Custom Solutions</div>
+        </div>
+        <div>
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">System Reliability</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="about-text">
+        Senseaxia delivers cutting-edge embedded electronics solutions for industrial environments. From bespoke hardware design to firmware development and systems integration, we bridge the gap between raw electronics and real-world industrial demands.
+      </p>
+      <p class="about-text">
+        Our work lives at the intersection of precision engineering and practical application — where reliability isn't optional, it's the baseline.
+      </p>
+      <div class="about-visual">
+        <div class="about-card">
+          <svg class="circuit-svg" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="100" x2="300" y2="100" stroke="white" stroke-width="1"/>
+            <line x1="150" y1="0" x2="150" y2="200" stroke="white" stroke-width="1"/>
+            <line x1="0" y1="50" x2="100" y2="50" stroke="white" stroke-width="1"/>
+            <line x1="100" y1="50" x2="100" y2="100" stroke="white" stroke-width="1"/>
+            <line x1="200" y1="100" x2="200" y2="150" stroke="white" stroke-width="1"/>
+            <line x1="200" y1="150" x2="300" y2="150" stroke="white" stroke-width="1"/>
+            <line x1="50" y1="100" x2="50" y2="170" stroke="white" stroke-width="1"/>
+            <line x1="50" y1="170" x2="150" y2="170" stroke="white" stroke-width="1"/>
+            <circle cx="100" cy="50" r="4" fill="white"/>
+            <circle cx="150" cy="100" r="4" fill="white"/>
+            <circle cx="200" cy="150" r="4" fill="white"/>
+            <circle cx="50" cy="170" r="4" fill="white"/>
+            <rect x="120" y="88" width="24" height="24" stroke="white" stroke-width="1"/>
+            <rect x="60" y="40" width="20" height="18" stroke="white" stroke-width="1"/>
+            <rect x="210" y="92" width="18" height="20" stroke="white" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="about-card">
+          <div class="card2-text">Precision<br/>by Design</div>
+          <div class="card2-sub">Embedded · Industrial · Reliable</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+
+  <section id="services">
+    <div class="services-header reveal">
+      <h2 class="services-heading">What We<br/>Offer</h2>
+      <p class="services-desc">Tailored embedded electronics and industrial solutions, engineered to your exact specifications.</p>
+    </div>
+
+```
+<div class="service-item reveal">
+  <span class="service-num">01</span>
+  <span class="service-name">Contact Us</span>
+  <a href="#contact" class="service-arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+```
+
+  </section>
+
+  <!-- CONTACT -->
+
+  <section id="contact">
+    <div class="reveal">
+      <div class="section-label">Get In Touch</div>
+      <h2 class="contact-heading">
+        Let's Build<br/>
+        <span>Together</span>
+      </h2>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" placeholder="John Smith"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="john@company.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell Us About Your Project</label>
+        <textarea class="form-textarea" placeholder="Describe your industrial challenge..."></textarea>
+      </div>
+      <button class="submit-btn">Send Message</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-logo">Senseaxia</div>
+    <div class="footer-copy">©️ 2025 Senseaxia. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    });
+
+    function animateCursor() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
